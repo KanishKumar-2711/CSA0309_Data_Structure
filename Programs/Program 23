@@ -1,0 +1,61 @@
+#include <stdio.h>
+
+#define INF 9999
+
+int main()
+{
+    int graph[20][20], distance[20], visited[20];
+    int n, i, j, source, min, next;
+
+    scanf("%d", &n);
+
+    for (i = 0; i < n; i++)
+        for (j = 0; j < n; j++)
+            scanf("%d", &graph[i][j]);
+
+    scanf("%d", &source);
+
+    for (i = 0; i < n; i++)
+    {
+        distance[i] = graph[source][i];
+        visited[i] = 0;
+    }
+
+    distance[source] = 0;
+    visited[source] = 1;
+
+    for (i = 1; i < n; i++)
+    {
+        min = INF;
+        next = -1;
+
+        for (j = 0; j < n; j++)
+        {
+            if (!visited[j] && distance[j] < min)
+            {
+                min = distance[j];
+                next = j;
+            }
+        }
+
+        if (next == -1)
+            break;
+
+        visited[next] = 1;
+
+        for (j = 0; j < n; j++)
+        {
+            if (!visited[j] &&
+                distance[next] + graph[next][j] < distance[j] &&
+                graph[next][j] != 0)
+            {
+                distance[j] = distance[next] + graph[next][j];
+            }
+        }
+    }
+
+    for (i = 0; i < n; i++)
+        printf("%d -> %d\n", i, distance[i]);
+
+    return 0;
+}
